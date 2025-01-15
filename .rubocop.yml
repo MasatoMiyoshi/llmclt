@@ -1,0 +1,44 @@
+require:
+  - rubocop-rake
+  - rubocop-rspec
+  - rubocop-performance
+
+inherit_from: .rubocop_todo.yml
+
+AllCops:
+  TargetRubyVersion: 2.7
+  NewCops: enable
+  Exclude:
+    - 'log/**/*'
+    - 'tmp/**/*'
+    - 'vendor/**/*'
+
+Gemspec/RequireMFA:
+  Enabled: false
+
+Style/AccessorGrouping:
+  Enabled: false
+
+Style/ClassAndModuleChildren:
+  Enabled: false
+
+Style/Documentation:
+  Enabled: false
+
+Style/StringLiterals:
+  EnforcedStyle: single_quotes
+
+Style/StringLiteralsInInterpolation:
+  EnforcedStyle: single_quotes
+
+Metrics/BlockLength:
+  Enabled: false
+
+Metrics/ClassLength:
+  Max: 150
+
+Metrics/MethodLength:
+  Max: 30
+
+RSpec/MultipleMemoizedHelpers:
+  Enabled: false

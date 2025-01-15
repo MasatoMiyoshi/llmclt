@@ -1,0 +1,63 @@
+{
+  "candidates": [
+    {
+      "modelVersion": "gemini-1.5-pro-001",
+      "content": {
+        "role": "model",
+        "parts": [
+          {
+            "text": "I'm Fine."
+          }
+        ]
+      },
+      "finishReason": "FINISH_REASON_STOP",
+      "safetyRatings": [
+        {
+          "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+          "probability": "NEGLIGIBLE",
+          "blocked": false
+        }
+      ],
+      "citationMetadata": {
+        "citations": [
+          {
+            "startIndex": 0,
+            "endIndex": 0,
+            "uri": "https://example.com/",
+            "title": "EXAMPLE",
+            "license": "MIT",
+            "publicationDate": {
+              "year": 2024,
+              "month": 1,
+              "day": 1
+            }
+          }
+        ]
+      },
+      "avgLogprobs": 0.0,
+      "logprobsResult": {
+        "topCandidates": [
+          {
+            "candidates": [
+              {
+                "token": "EXAMPLE",
+                "logProbability": 0.0
+              }
+            ]
+          }
+        ],
+        "chosenCandidates": [
+          {
+            "token": "EXAMPLE",
+            "logProbability": 0.0
+          }
+        ]
+      }
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 100,
+    "candidatesTokenCount": 100,
+    "totalTokenCount": 200
+  }
+}
