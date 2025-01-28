@@ -71,6 +71,7 @@ RSpec.describe Llmclt::Client do
     context 'when stream is true' do
       it 'gets a response' do
         response = client.request(prompt, stream: true)
+        expect(response.success?).to be(true)
         expect(response.text).to eq("I'm Fine.")
       end
     end
@@ -78,6 +79,7 @@ RSpec.describe Llmclt::Client do
     context 'when stream is false' do
       it 'gets a response' do
         response = client.request(prompt)
+        expect(response.success?).to be(true)
         expect(response.text).to eq("I'm Fine.")
       end
     end
@@ -85,6 +87,7 @@ RSpec.describe Llmclt::Client do
     context 'when multi-turn conversations' do
       it 'gets a response' do
         response = client.request(prompt, histories: histories)
+        expect(response.success?).to be(true)
         expect(response.text).to eq("I'm Fine.")
       end
     end
@@ -92,6 +95,7 @@ RSpec.describe Llmclt::Client do
     context 'when setting a system instruction' do
       it 'gets a response' do
         response = client_with_config.request(prompt)
+        expect(response.success?).to be(true)
         expect(response.text).to eq("I'm Fine.")
       end
     end
