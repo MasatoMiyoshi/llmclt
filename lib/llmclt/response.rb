@@ -2,10 +2,25 @@
 
 module Llmclt
   class Response
-    attr_reader :response
+    attr_reader :response_orig, :response
 
-    def initialize(response_json)
-      @response = JSON.parse(response_json)
+    def initialize(response)
+      @response_orig = response
+      @response = JSON.parse(response.body) if response.body
+    rescue JSON::ParserError
+      @response = nil
+    end
+
+    def status
+      response_orig.code.to_i
+    end
+
+    def success?
+      status == 200
+    end
+
+    def error?
+      status >= 400 && status <= 599
     end
 
     def text

@@ -12,7 +12,7 @@ module Llmclt
       request = build_request(uri, prompt, histories)
       http = checkout_http(uri)
       response = http.start { |h| h.request(request) }
-      Llmclt::Response.new(response.body)
+      Llmclt::Response.new(response)
     end
 
     def shutdown
