@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Llmclt
-  class Request
+  class Fetcher
     def initialize(config)
       @config = config
       @pool = Llmclt::Http::ConnectionPool.new

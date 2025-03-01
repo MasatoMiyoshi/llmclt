@@ -4,15 +4,15 @@ module Llmclt
   class Client
     def initialize(**kwargs)
       @config = Llmclt::Config.new(**kwargs)
-      @request = Llmclt::Request.new(@config)
+      @fetcher = Llmclt::Fetcher.new(@config)
     end
 
     def request(prompt, stream: false, histories: [])
-      @request.run(prompt, stream: stream, histories: histories)
+      @fetcher.run(prompt, stream: stream, histories: histories)
     end
 
     def shutdown
-      @request.shutdown
+      @fetcher.shutdown
     end
   end
 end
