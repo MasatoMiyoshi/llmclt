@@ -8,11 +8,17 @@ module Llmclt
     end
 
     def run(prompt, stream: false, histories: [])
-      uri = request_uri(stream)
-      request = build_request(uri, prompt, histories)
-      http = checkout_http(uri)
-      response = http.start { |h| h.request(request) }
-      Llmclt::Response.new(response)
+      request = build_request(
+        request_mode(stream),
+        request_headers,
+        @config,
+        prompt,
+        histories
+      )
+
+      http = checkout_http(request.endpoint_uri)
+      response = http.start { |h| h.request(request.content) }
+      request.build_response(response)
     end
 
     def shutdown
@@ -21,16 +27,12 @@ module Llmclt
 
     private
 
-    def request_uri(stream)
+    def request_mode(stream)
       if stream
-        URI.parse("#{endpoint_url}:streamGenerateContent")
+        'streaming'
       else
-        URI.parse("#{endpoint_url}:generateContent")
+        'non_streaming'
       end
-    end
-
-    def endpoint_url
-      "https://#{@config.location_id}-aiplatform.googleapis.com/v1/projects/#{@config.project_id}/locations/#{@config.location_id}/publishers/google/models/#{@config.model}"
     end
 
     def request_headers
@@ -46,6 +48,25 @@ module Llmclt
         @authorizer.fetch_access_token!
       end
       @authorizer
+    end
+
+    def build_request(request_mode, request_headers, config, prompt, histories)
+      case request_mode
+      when 'streaming'
+        Llmclt::Request::Streaming.new(
+          request_headers, config,
+          prompt: prompt,
+          histories: histories
+        )
+      when 'non_streaming'
+        Llmclt::Request::NonStreaming.new(
+          request_headers, config,
+          prompt: prompt,
+          histories: histories
+        )
+      else
+        raise NameError, "#{request_mode} is an invalid request mode"
+      end
     end
 
     def checkout_http(uri)
@@ -64,65 +85,6 @@ module Llmclt
       http.use_ssl = true
       http.verify_mode = OpenSSL::SSL::VERIFY_NONE
       http
-    end
-
-    def build_request(uri, prompt, histories)
-      request = Net::HTTP::Post.new(uri.request_uri)
-      request_headers.each do |key, value|
-        request[key] = value
-      end
-      request.body = build_request_json(prompt, histories)
-      request
-    end
-
-    def build_request_json(prompt, histories)
-      req = {}
-      req.merge!(build_request_contents(prompt, histories))
-      req.merge!(build_request_system_instruction)
-      req.to_json
-    end
-
-    def build_request_contents(prompt, histories)
-      content = { contents: [] }
-      content.merge!(@config.safety_config.build_request_content)
-      content.merge!(@config.generation_config.build_request_content)
-      content[:contents].concat(build_request_history_contents(histories))
-      content[:contents] << build_request_user_prompt(prompt)
-      content
-    end
-
-    def build_request_history_contents(histories)
-      histories.map do |history|
-        {
-          role: history[:role],
-          parts: [{ text: history[:text] }]
-        }
-      end
-    end
-
-    def build_request_user_prompt(prompt)
-      {
-        role: 'user',
-        parts: [
-          {
-            text: prompt
-          }
-        ]
-      }
-    end
-
-    def build_request_system_instruction
-      return {} if @config.system_instruction_prompt.nil? || @config.system_instruction_prompt.empty?
-
-      {
-        systemInstruction: {
-          parts: [
-            {
-              text: @config.system_instruction_prompt
-            }
-          ]
-        }
-      }
     end
   end
 end
