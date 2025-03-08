@@ -11,6 +11,10 @@ module Llmclt
       @fetcher.run(prompt, stream: stream, histories: histories)
     end
 
+    def chat_jsonl(prompts, histories: [])
+      Llmclt::Syntax::Chat.new(prompts, @config, histories: histories).to_jsonl
+    end
+
     def shutdown
       @fetcher.shutdown
     end

@@ -82,6 +82,22 @@ response = client.request(prompt, histories: histories)
 response.text
 ```
 
+### Output JSON Lines format
+
+ ```ruby
+ client = Llmclt::Client.new()
+ prompt = [
+   'Hello. This is Tom!. How are you?',
+   'Do you know my name?'
+ ]
+ client.chat_jsonl(prompts)
+ ```
+ then, it outputs JSON Lines like as follows:
+ ```json
+ {"request":{"contents": [{"role": "user", "parts": [{"text": "Hello. This is Tom!. How are you?"}]}]}}
+ {"request":{"contents": [{"role": "user", "parts": [{"text": "Do you know my name?"}]}]}}
+ ```
+
 ### Configuration
 
 ```ruby
