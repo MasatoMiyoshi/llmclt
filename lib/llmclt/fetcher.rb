@@ -15,10 +15,27 @@ module Llmclt
         prompt,
         histories
       )
+      request_http(request)
+    end
 
-      http = checkout_http(request.endpoint_uri)
-      response = http.start { |h| h.request(request.content) }
-      request.build_response(response)
+    def batch_run(batch_job_name, gcs_input_uri, gcs_output_uri)
+      request = Llmclt::Request::Batch.new(
+        request_headers,
+        @config,
+        batch_job_name: batch_job_name,
+        gcs_input_uri: gcs_input_uri,
+        gcs_output_uri: gcs_output_uri
+      )
+      request_http(request)
+    end
+
+    def batch_state_run(batch_job_id)
+      request = Llmclt::Request::Batch.new(
+        request_headers,
+        @config,
+        batch_job_id: batch_job_id
+      )
+      request_http(request)
     end
 
     def shutdown
@@ -26,6 +43,12 @@ module Llmclt
     end
 
     private
+
+    def request_http(request)
+      http = checkout_http(request.endpoint_uri)
+      response = http.start { |h| h.request(request.content) }
+      request.build_response(response)
+    end
 
     def request_mode(stream)
       if stream
