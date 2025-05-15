@@ -28,6 +28,14 @@ module Llmclt
 
       private
 
+      def endpoint_host
+        if @config.location_id == 'global'
+          'aiplatform.googleapis.com'
+        else
+          "#{@config.location_id}-aiplatform.googleapis.com"
+        end
+      end
+
       def build_request_json
         raise NotImplementedError, "#{class_name}#{__method__} is not implemented"
       end

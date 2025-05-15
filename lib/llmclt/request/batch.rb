@@ -4,7 +4,7 @@ module Llmclt
   module Request
     class Batch < Base
       def endpoint_uri
-        url = "https://#{@config.location_id}-aiplatform.googleapis.com/v1/projects/#{@config.project_id}/locations/#{@config.location_id}/batchPredictionJobs"
+        url = "https://#{endpoint_host}/v1/projects/#{@config.project_id}/locations/#{@config.location_id}/batchPredictionJobs"
         url = "#{url}/#{@batch_job_id}" if @batch_job_id
         URI.parse(url)
       end
