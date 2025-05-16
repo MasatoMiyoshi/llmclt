@@ -1,0 +1,26 @@
+{
+  "name": "projects/PROJECT_ID/locations/LOCATION/batchPredictionJobs/BATCH_JOB_ID",
+  "displayName": "JOB_NAME",
+  "model": "publishers/google/models/gemini-2.0-flash-lite-001",
+  "inputConfig": {
+    "instancesFormat": "jsonl",
+    "gcsSource": {
+      "uris": [
+        "INPUT_URI"
+      ]
+    }
+  },
+  "outputConfig": {
+    "predictionsFormat":"OUTPUT_FORMAT",
+    "DESTINATION":{
+      "OUTPUT_URI_FIELD_NAME": "OUTPUT_URI"
+    }
+  },
+  "state": "JOB_STATE_PENDING",
+  "createTime": "2024-10-16T19:33:59.153782Z",
+  "updateTime": "2024-10-16T19:33:59.153782Z",
+  "labels": {
+    "purpose": "testing"
+  },
+  "modelVersionId": "1"
+}

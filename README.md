@@ -82,6 +82,47 @@ response = client.request(prompt, histories: histories)
 response.text
 ```
 
+### Output JSON Lines format
+
+```ruby
+client = Llmclt::Client.new()
+prompt = [
+  'Hello. This is Tom!. How are you?',
+  'Do you know my name?'
+]
+client.chat_jsonl(prompts)
+```
+then, it outputs JSON Lines like as follows:
+```json
+{"request":{"contents": [{"role": "user", "parts": [{"text": "Hello. This is Tom!. How are you?"}]}]}}
+{"request":{"contents": [{"role": "user", "parts": [{"text": "Do you know my name?"}]}]}}
+```
+
+### Batch mode
+
+```ruby
+client = Llmclt::Client.new(
+  project_id: project_id,
+  location_id: location_id,
+  model: model,
+  service_account_json: service_account_json
+)
+batch_job_name = 'BATCH_JOB_NAME'
+gcs_input_uri = 'gs://BUCKET_NAME/file.jsonl'
+gcs_output_uri = 'gs://BUCKET_NAME/'
+response = client.batch_request(batch_job_name, gcs_input_uri, gcs_output_uri)
+response.state
+=> 'JOB_STATE_PENDING'
+response.batch_job_id
+=> 'BATCH_JOB_ID'
+```
+then, you can poll for the status of the batch job using the `BATCH_JOB_ID` like as follows:
+```ruby
+response = client.batch_state_request('BATCH_JOB_ID')
+response.state
+=> 'JOB_STATE_SUCCEEDED'
+```
+
 ### Configuration
 
 ```ruby
