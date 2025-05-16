@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## Unreleased
+## 1.0.2
 
 - Rename a class from Request to Fetcher
 - Separate request and response classes for each mode
