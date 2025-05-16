@@ -21,7 +21,7 @@ module Llmclt
       end
 
       def error?
-        status >= 400 && status <= 599
+        status.between?(400, 599)
       end
     end
   end
