@@ -7,6 +7,7 @@
 - Add request jsonl output feature
 - Add batch request feature
 - Fix endpoint urls when location_id is global
+- Change required ruby version from 2.7 to 3.1
 
 ## 1.0.1
 
