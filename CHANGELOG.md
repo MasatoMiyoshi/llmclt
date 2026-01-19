@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 1.0.3
+
+- Test on ruby 4.0
+
 ## 1.0.2
 
 - Rename a class from Request to Fetcher
